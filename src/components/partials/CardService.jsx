@@ -1,18 +1,18 @@
 import React from "react";
 
-const CardService = ({imageUrl, alt, title, description, aText}) => {
+const CardService = ({item}) => {
   return (
     <>
-      <div className="card">
+      <div id={item.web_services_aid} className="card">
         <img
-          src={imageUrl}
-          alt={alt}
+          src={item.web_services_image}
+          alt={item.web_services_image}
         />
-        <h3>{title}</h3>
+        <h3>{item.web_services_name}</h3>
         <p>
-          {description}
+          {item.web_services_description	}
         </p>
-        <a href="#">{aText} &rarr;</a>
+        <a href={item.web_services_link}>{item.web_services_text_url} &rarr;</a>
       </div>
     </>
   );

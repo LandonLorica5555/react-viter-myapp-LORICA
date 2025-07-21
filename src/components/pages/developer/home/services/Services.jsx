@@ -1,7 +1,20 @@
 import React from "react";
 import CardService from "../../../../partials/CardService";
+import useQueryData from "../../../../custom-hooks/useQueryData";
+import { apiVersion } from "../../../../helpers/function-general";
 
 const Services = () => {
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: dataServices,
+  } = useQueryData(
+    `${apiVersion}/controllers/developer/web-services/web-services.php`,
+    "get",
+    "web-services"
+  );
+
   return (
     <>
       <section id="services" className="bg-gray-50 py-12 md:py-20">
@@ -11,19 +24,26 @@ const Services = () => {
             <p>Professional solutions tailored to boost your online presence</p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+            {dataServices?.data.map((item, key) => {
+              return (
+                <React.Fragment key={key}>
+                  <CardService item={item} />
+                </React.Fragment>
+              );
+            })}
             {/* Card 1 */}
-            <CardService
-              imageUrl={"/images/card-icon-web-development.webp"}
+            {/* <CardService
+              imageUrl={"../images/card-icon-web-development.webp"}
               alt={"Web Development Image"}
               title={"Web Development"}
               description={
                 "Custom websites built with modern frameworks like Next.js and React for optiomal performance."
               }
               aText={"View Packages"}
-            />
+            /> */}
 
             {/* Card 2 */}
-            <CardService
+            {/* <CardService
               imageUrl={"/images/card-icon-ui-ux-design.webp"}
               alt={"UI/UX Design Image"}
               title={"UI/UX Design"}
@@ -31,10 +51,10 @@ const Services = () => {
                 "Beautiful interfaces designed to convert visitors with strategic user experience flaws."
               }
               aText={"See Portfolio"}
-            />
+            /> */}
 
             {/* Card 3 */}
-            <CardService
+            {/* <CardService
               imageUrl={"/images/card-icon-seo-optimization.webp"}
               alt={"SEO Optimization Image"}
               title={"SEO Optimization"}
@@ -42,7 +62,7 @@ const Services = () => {
                 "Increase your visibility on search engines with our data-driven SEO strategies."
               }
               aText={"Get Audit"}
-            />
+            /> */}
           </div>
         </div>
       </section>
