@@ -1,14 +1,18 @@
 import React from "react";
+import { FaPlus } from "react-icons/fa";
+import ModalAddHeader from "./ModalAddHeader";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isModalHeader, setIsModalHeader] = React.useState(false);
+
+  const handleAdd = () => {
+    setIsModalHeader(true);
+  };
 
   return (
     <>
-      <header
-        id="header"
-        className="bg-white relative shadow-md w-full "
-      >
+      <header id="header" className="bg-white relative shadow-md w-full ">
         <div className="container mx-auto px-4 py-7 flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center">
@@ -30,6 +34,14 @@ const Header = () => {
             <a href="#contact" className="hover:text-blue-500">
               Contact
             </a>
+            <button
+              className="flex items-center gap-2 hover:underline hover:text-primary"
+              type="button"
+              onClick={handleAdd}
+            >
+              <FaPlus className="size-3" />
+              Add
+            </button>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -100,9 +112,19 @@ const Header = () => {
             >
               Contact
             </a>
+            <button
+              className="flex items-center gap-2 hover:underline hover:text-primary"
+              type="button"
+              onClick={handleAdd}
+            >
+              <FaPlus className="size-3" />
+              Add
+            </button>
           </div>
         )}
       </header>
+
+      {isModalHeader && <ModalAddHeader setisHeader={setIsModalHeader} />}
     </>
   );
 };
