@@ -3,9 +3,10 @@ import { useField } from "formik";
 export const InputTextArea = ({
   label,
   onChange = null,
-  className = "",
+  className = "resize-none",
   labelClassName = "",
   focus = false,
+  rows = 12,
   ...props
 }) => {
   const [field, meta] = useField(props);

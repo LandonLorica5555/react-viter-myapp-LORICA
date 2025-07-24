@@ -109,19 +109,19 @@ const Contact = () => {
             </div>
             <form
               action=""
-              className="bg-gray-50 rounded-xl p-8 h-fit md:w-1/2"
+              className="contacts bg-gray-50 rounded-xl p-8 h-fit md:w-1/2"
             >
-              <div>
-                <label for="">Full Name</label>
+              <div className="relative mb-6">
+                <label for="" className="">Full Name</label>
                 <input type="text" />
               </div>
-              <div>
+              <div className="relative mb-6">
                 <label for="">Email Address</label>
                 <input type="email" />
               </div>
-              <div>
+              <div className="relative mb-6">
                 <label for="">Message</label>
-                <textarea name="" id="" rows="4"></textarea>
+                <textarea name="" id="" rows="6" className="resize-none"></textarea>
               </div>
               <button className="btn btn--blue w-full">Send Message</button>
             </form>

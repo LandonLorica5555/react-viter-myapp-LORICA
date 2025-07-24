@@ -1,6 +1,7 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import ModalAddHeader from "./ModalAddHeader";
+import { HiPencil } from "react-icons/hi";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -21,7 +22,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6">
+          <nav className="hidden md:flex space-x-6 items-center">
             <a href="#home" className="hover:text-blue-500">
               Home
             </a>
@@ -35,12 +36,12 @@ const Header = () => {
               Contact
             </a>
             <button
-              className="flex items-center gap-2 hover:underline hover:text-primary"
+              className="tooltip"
+              data-tooltip={"Add"}
               type="button"
               onClick={handleAdd}
             >
-              <FaPlus className="size-3" />
-              Add
+              <HiPencil className="bg-primary text-white size-6 p-1 border transition-all ease-in-out duration-200 rounded-full" />
             </button>
           </nav>
 
@@ -113,18 +114,18 @@ const Header = () => {
               Contact
             </a>
             <button
-              className="flex items-center gap-2 hover:underline hover:text-primary"
+              className="tooltip"
+              data-tooltip={"Add"}
               type="button"
               onClick={handleAdd}
             >
-              <FaPlus className="size-3" />
-              Add
+              <HiPencil className="bg-primary text-white size-6 p-1 border transition-all ease-in-out duration-200 rounded-full" />
             </button>
           </div>
         )}
       </header>
 
-      {isModalHeader && <ModalAddHeader setisHeader={setIsModalHeader} />}
+      {isModalHeader && <ModalAddHeader setIsModal={setIsModalHeader} />}
     </>
   );
 };
