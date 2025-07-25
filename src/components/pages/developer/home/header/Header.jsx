@@ -2,18 +2,38 @@ import React from "react";
 import { FaPlus } from "react-icons/fa";
 import ModalAddHeader from "./ModalAddHeader";
 import { HiPencil } from "react-icons/hi";
+import useQueryData from "../../../../custom-hooks/useQueryData";
+import { apiVersion } from "../../../../helpers/function-general";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isModalHeader, setIsModalHeader] = React.useState(false);
+  const [itemEdit, setItemEdit] = React.useState();
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: dataHeader,
+  } = useQueryData(
+    `${apiVersion}/controllers/developer/header/header.php`,
+    "get",
+    "header"
+  );
 
   const handleAdd = () => {
+    setItemEdit(null);
+    setIsModalHeader(true);
+  };
+
+  const handleEdit = (item) => {
+    setItemEdit(item);
     setIsModalHeader(true);
   };
 
   return (
     <>
-      <header id="header" className="bg-white relative shadow-md w-full ">
+      <header id="header" className="bg-white relative shadow-md w-full">
         <div className="container mx-auto px-4 py-7 flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center">
@@ -23,7 +43,19 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-6 items-center">
-            <a href="#home" className="hover:text-blue-500">
+            {dataHeader?.data.map((item, key) => {
+              return (
+                <a
+                  onClick={() => handleEdit(item)}
+                  key={key}
+                  href={item.header_link}
+                  className="hover:text-blue-500"
+                >
+                  {item.header_name}
+                </a>
+              );
+            })}
+            {/* <a href="#home" className="hover:text-blue-500">
               Home
             </a>
             <a href="#about" className="hover:text-blue-500">
@@ -34,7 +66,7 @@ const Header = () => {
             </a>
             <a href="#contact" className="hover:text-blue-500">
               Contact
-            </a>
+            </a> */}
             <button
               className="tooltip"
               data-tooltip={"Add"}
@@ -85,7 +117,14 @@ const Header = () => {
         {/* Mobile Menu (now positioned absolutely) */}
         {isMenuOpen && (
           <div className="md:hidden bg-white absolute top-full left-0 right-0 shadow-lg px-4 py-2 space-y-2 border-t border-gray-200">
-            <a
+            {dataHeader?.data.map((item, key) => {
+              return (
+                <a href="#home" className="hover:text-blue-500">
+                  {item.header_name}
+                </a>
+              );
+            })}
+            {/* <a
               onClick={() => setIsMenuOpen(false)}
               href="#home"
               className="block py-2 hover:text-blue-500"
@@ -112,7 +151,7 @@ const Header = () => {
               className="block py-2 hover:text-blue-500"
             >
               Contact
-            </a>
+            </a> */}
             <button
               className="tooltip"
               data-tooltip={"Add"}
@@ -125,7 +164,9 @@ const Header = () => {
         )}
       </header>
 
-      {isModalHeader && <ModalAddHeader setIsModal={setIsModalHeader} />}
+      {isModalHeader && (
+        <ModalAddHeader setIsModal={setIsModalHeader} itemEdit={itemEdit} />
+      )}
     </>
   );
 };

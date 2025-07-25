@@ -96,6 +96,13 @@ function checkCreate($models)
     return $query;
 }
 
+function checkUpdate($models)
+{
+    $query = $models->update();
+    checkQuery($query, "There's something wrong with models. (update)");
+    return $query;
+}
+
 function getResultData($query)
 {
     $data = $query->fetchAll();

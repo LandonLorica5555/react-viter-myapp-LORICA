@@ -3,10 +3,10 @@
 $conn = null;
 $conn = checkDatabaseConnection();
 // use models
-$webServices = new WebServices($conn);
+$header = new Header($conn);
 
 if (empty($_GET)) {
-    $query = checkReadAll($webServices);
+    $query = checkReadAll($header);
     http_response_code(200);
     getQueriedData($query);
 }

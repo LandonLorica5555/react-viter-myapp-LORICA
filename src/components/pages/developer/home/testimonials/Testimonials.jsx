@@ -82,7 +82,7 @@ const Testimonials = () => {
                 {/* Testimonial 3 */}
                 {/* <CardTestimonial
                   imageUrl={"/images/testimonials-3.webp"}
-                  alt={"Emma Rodriguez"}
+                  alt={"  "}
                   testimony={`"Their SEO strategy tripled our organic traffic in 6 months. We've seen a dramatic improvement in lead quality and conversion rates."`}
                   name={"Emma Rodriguez"}
                   position={"CMO, GrowthSolutions"}
@@ -93,7 +93,9 @@ const Testimonials = () => {
             {/* Navigation Arrows */}
             <button
               onClick={() =>
-                setCurrentSlide((prev) => (prev === 0 ? 2 : prev - 1))
+                setCurrentSlide((prev) =>
+                  prev === 0 ? dataTestimonials.count - 1 : prev - 1
+                )
               }
               className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
             >
@@ -101,7 +103,9 @@ const Testimonials = () => {
             </button>
             <button
               onClick={() =>
-                setCurrentSlide((prev) => (prev === 2 ? 0 : prev + 1))
+                setCurrentSlide((prev) =>
+                  prev === dataTestimonials.count - 1 ? 0 : prev + 1
+                )
               }
               className="absolute right-0 top-1/2 -translate-y-1/2 -ml-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
             >
@@ -110,7 +114,7 @@ const Testimonials = () => {
 
             {/* Dots Indicator */}
             <div className="flex justify-center mt-6 space-x-2">
-              {[0, 1, 2].map((index) => (
+              {dataTestimonials?.data.map((item, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
