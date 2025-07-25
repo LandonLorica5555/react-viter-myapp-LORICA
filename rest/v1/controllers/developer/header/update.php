@@ -18,3 +18,5 @@ if (array_key_exists('id', $_GET)) {
     $query = checkUpdate($header);
     returnSuccess($header, 'header update', $query);
 }
+
+checkEndpoint();
