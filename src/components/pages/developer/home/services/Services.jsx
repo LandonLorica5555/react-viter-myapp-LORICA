@@ -2,13 +2,18 @@ import React from "react";
 import CardService from "../../../../partials/CardService";
 import useQueryData from "../../../../custom-hooks/useQueryData";
 import { apiVersion } from "../../../../helpers/function-general";
-import { FaPlus } from "react-icons/fa";
+import { FaList, FaPlus, FaTable, FaTrash } from "react-icons/fa";
 import ModalAddServices from "./ModalAddServices";
 import { FaPencil } from "react-icons/fa6";
+import ModalDeleteServices from "./ModalDeleteServices";
+import ServicesList from "./ServicesList";
+import ServicesTable from "./ServicesTable";
 
 const Services = () => {
   const [isModalServices, setIsModalServices] = React.useState(false);
+  const [isDeleteServices, setIsDeleteServices] = React.useState(false);
   const [itemEdit, setItemEdit] = React.useState();
+  const [isTable, setIsTable] = React.useState(false);
 
   const {
     isLoading,
@@ -21,6 +26,10 @@ const Services = () => {
     "web-services" // query key
   );
 
+  const handleToggleTable = () => {
+    setIsTable(!isTable);
+  };
+
   const handleAdd = () => {
     setItemEdit(null);
     setIsModalServices(true);
@@ -29,6 +38,11 @@ const Services = () => {
   const handleEdit = (item) => {
     setItemEdit(item);
     setIsModalServices(true);
+  };
+
+  const handleDelete = (item) => {
+    setItemEdit(item);
+    setIsDeleteServices(true);
   };
 
   return (
@@ -48,6 +62,24 @@ const Services = () => {
                 <button
                   className="flex items-center gap-2 hover:underline hover:text-primary"
                   type="button"
+                  onClick={handleToggleTable}
+                >
+                  {isTable == true ? (
+                    <>
+                      <FaList className="size-3" />
+                      List
+                    </>
+                  ) : (
+                    <>
+                      <FaTable className="size-3" />
+                      Table
+                    </>
+                  )}
+                  
+                </button>
+                <button
+                  className="flex items-center gap-2 hover:underline hover:text-primary"
+                  type="button"
                   onClick={handleAdd}
                 >
                   <FaPlus className="size-3" />
@@ -58,61 +90,40 @@ const Services = () => {
           </div>
 
           {/* 3-Column Grid */}
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-            {dataServices?.data.map((item, key) => {
-              return (
-                <div key={key} className="relative">
-                  <div className="absolute -top-2 right-0 size-3">
-                    <button
-                      type="button"
-                      data-tooltip="Edit"
-                      className="tooltip text-white"
-                      onClick={() => handleEdit(item)}
-                    >
-                      <FaPencil className="p-1 bg-primary rounded-full" />
-                    </button>
-                  </div>
-                  <CardService item={item} />
-                </div>
-              );
-            })}
-            {/* Card 1 */}
-            {/* <CardService
-              imageUrl={"../images/card-icon-web-development.webp"}
-              alt={"Web Development Image"}
-              title={"Web Development"}
-              description={
-                "Custom websites built with modern frameworks like Next.js and React for optiomal performance."
-              }
-              aText={"View Packages"}
-            /> */}
-
-            {/* Card 2 */}
-            {/* <CardService
-              imageUrl={"/images/card-icon-ui-ux-design.webp"}
-              alt={"UI/UX Design Image"}
-              title={"UI/UX Design"}
-              description={
-                "Beautiful interfaces designed to convert visitors with strategic user experience flaws."
-              }
-              aText={"See Portfolio"}
-            /> */}
-
-            {/* Card 3 */}
-            {/* <CardService
-              imageUrl={"/images/card-icon-seo-optimization.webp"}
-              alt={"SEO Optimization Image"}
-              title={"SEO Optimization"}
-              description={
-                "Increase your visibility on search engines with our data-driven SEO strategies."
-              }
-              aText={"Get Audit"}
-            /> */}
-          </div>
+          {isTable == true ? (
+            <ServicesTable
+              isLoading={isLoading}
+              isFetching={isFetching}
+              error={error}
+              dataServices={dataServices}
+              handleAdd={handleAdd}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
+          ) : (
+            <ServicesList
+              isLoading={isLoading}
+              isFetching={isFetching}
+              error={error}
+              dataServices={dataServices}
+              handleAdd={handleAdd}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
+          )}
         </div>
       </section>
 
-      {isModalServices && <ModalAddServices setIsModal={setIsModalServices} itemEdit={itemEdit}/>}
+      {isModalServices && (
+        <ModalAddServices setIsModal={setIsModalServices} itemEdit={itemEdit} />
+      )}
+      {isDeleteServices && (
+        <ModalDeleteServices
+          setModalDelete={setIsDeleteServices}
+          mySqlEndpoint={`${apiVersion}/controllers/developer/web-services/web-services.php?id=${itemEdit.web_services_aid}`}
+          queryKey="web-services"
+        />
+      )}
     </>
   );
 };
