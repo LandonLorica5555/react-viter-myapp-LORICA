@@ -13,7 +13,7 @@ const TestimonialsList = ({
   handleDelete,
   handleEdit,
   currentSlide,
-  setCurrentSlide
+  setCurrentSlide,
 }) => {
   return (
     <>

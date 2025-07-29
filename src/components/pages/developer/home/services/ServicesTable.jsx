@@ -16,6 +16,7 @@ const ServicesTable = ({
       <table>
         <thead>
           <th>#</th>
+          <th>Image</th>
           <th>Name</th>
           <th>Description</th>
           <th>Action</th>
@@ -25,6 +26,7 @@ const ServicesTable = ({
             return (
               <tr>
                 <td>{index + 1}.</td>
+                <td>{item.web_services_image}</td>
                 <td>{item.web_services_name}</td>
                 <td>{item.web_services_description}</td>
                 <td>

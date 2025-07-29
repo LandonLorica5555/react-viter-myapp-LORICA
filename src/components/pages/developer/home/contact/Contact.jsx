@@ -1,6 +1,86 @@
+import { Form, Formik } from "formik";
 import React from "react";
+import { InputText, InputTextArea } from "../../../../helpers/FormInputs";
+import * as Yup from "yup";
+import { FaList, FaPlus, FaTable } from "react-icons/fa";
+import { apiVersion } from "../../../../helpers/function-general";
+import useQueryData from "../../../../custom-hooks/useQueryData";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { queryData } from "../../../../custom-hooks/queryData";
+import ContactTable from "./ContactTable";
+import ContactList from "./ContactList";
 
 const Contact = () => {
+  const [isDeleteContact, setIsDeleteContact] = React.useState(false);
+  const [itemEdit, setItemEdit] = React.useState();
+  const [isTable, setIsTable] = React.useState(false);
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (values) =>
+      queryData(
+        itemEdit
+          ? `${apiVersion}/controllers/developer/contact/contact.php?id=${itemEdit.contact_aid}`
+          : `${apiVersion}/controllers/developer/contact/contact.php`,
+        itemEdit
+          ? "put" // UPDATE
+          : "post", // CREATE
+        values
+      ),
+    onSuccess: (data) => {
+      // validate reading
+      queryClient.invalidateQueries({ queryKey: ["contact"] }); // give id for refetching data.
+
+      if (data.success) {
+        alert(itemEdit ? "Successfully edited." : "Successfully created.");
+      } else {
+        alert(data.error);
+      }
+    },
+  });
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: dataContact,
+  } = useQueryData(
+    `${apiVersion}/controllers/developer/contact/contact.php`,
+    "get",
+    "contact"
+  );
+
+  const initVal = {
+    contact_fullname: itemEdit ? itemEdit.contact_fullname : "",
+    contact_email: itemEdit ? itemEdit.contact_email : "",
+    contact_message: itemEdit ? itemEdit.contact_message : "",
+  };
+
+  const yupSchema = Yup.object({
+    contact_fullname: Yup.string().required("required"),
+    contact_email: Yup.string()
+      .email("Must put a valid email")
+      .required("required"),
+    contact_message: Yup.string().required("required"),
+  });
+
+  const handleToggleTable = () => {
+    setIsTable(!isTable);
+  };
+
+  const handleAdd = () => {
+    setItemEdit(null);
+  };
+
+  const handleEdit = (item) => {
+    setItemEdit(item);
+  };
+
+  const handleDelete = (item) => {
+    setItemEdit(item);
+    setIsDeleteContact(true);
+  };
+
   return (
     <>
       <section id="contact">
@@ -107,7 +187,66 @@ const Contact = () => {
                 </li>
               </ul>
             </div>
-            <form
+            {/* Forms Section */}
+            <div className="contacts bg-gray-50 rounded-xl p-8 h-fit md:w-1/2 relative">
+              <div className="absolute top-0 right-0">
+                <div className="flex items-center gap-x-3">
+                  <button
+                    className="flex items-center gap-2 hover:underline hover:text-primary"
+                    type="button"
+                    onClick={handleToggleTable}
+                  >
+                    {isTable == true ? (
+                      <>
+                        <FaList className="size-3" />
+                        List
+                      </>
+                    ) : (
+                      <>
+                        <FaTable className="size-3" />
+                        Table
+                      </>
+                    )}
+                  </button>
+                  {/* <button
+                    className="flex items-center gap-2 hover:underline hover:text-primary"
+                    type="button"
+                    onClick={handleAdd}
+                  >
+                    <FaPlus className="size-3" />
+                    Add
+                  </button> */}
+                </div>
+              </div>
+              {/* Forms */}
+              {isTable == true ? (
+                <ContactTable
+                  isLoading={isLoading}
+                  isFetching={isFetching}
+                  error={error}
+                  dataContact={dataContact}
+                  handleAdd={handleAdd}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                />
+              ) : (
+                <ContactList
+                  isLoading={isLoading}
+                  isFetching={isFetching}
+                  error={error}
+                  dataContact={dataContact}
+                  initVal={initVal}
+                  yupSchema={yupSchema}
+                  mutation={mutation}
+                  itemEdit={itemEdit}
+                  handleAdd={handleAdd}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                />
+              )}
+            </div>
+
+            {/* <form
               action=""
               className="contacts bg-gray-50 rounded-xl p-8 h-fit md:w-1/2"
             >
@@ -124,7 +263,7 @@ const Contact = () => {
                 <textarea name="" id="" rows="6" className="resize-none"></textarea>
               </div>
               <button className="btn btn--blue w-full">Send Message</button>
-            </form>
+            </form> */}
           </div>
         </div>
       </section>

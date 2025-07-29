@@ -30,7 +30,9 @@ const ModalAddTestimonials = ({ setIsModal, itemEdit }) => {
       if (!data.success) {
         window.prompt(data.error);
       } else {
-        window.prompt(`Successfully created.`);
+        window.prompt(
+          itemEdit ? `Successfully edited.` : `Successfully created.`
+        );
         setIsModal(false);
       }
     },

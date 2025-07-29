@@ -55,7 +55,7 @@ const Testimonials = () => {
     <>
       <section id="testimonials" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="flex flex-row justify-center items-center gap-4 mb-10 relative">
+          <div className="flex flex- md:flex-row justify-center items-center gap-4 mb-10 relative">
             <div className="">
               <h2 className="text-3xl font-bold">Client Testimonials</h2>
             </div>
@@ -109,8 +109,8 @@ const Testimonials = () => {
               dataTestimonials={dataTestimonials}
               handleAdd={handleAdd}
               handleEdit={handleEdit}
-              currentSlide={currentSlide}
               setCurrentSlide={setCurrentSlide}
+              currentSlide={currentSlide}
               handleDelete={handleDelete}
             />
           )}
@@ -125,6 +125,9 @@ const Testimonials = () => {
       )}
       {isDeleteTestimonials && (
         <ModalDeleteTestimonials
+          dataTestimonials={dataTestimonials}
+          currentSlide={currentSlide}
+          setCurrentSlide={setCurrentSlide}
           setModalDelete={setIsDeleteTestimonials}
           mySqlEndpoint={`${apiVersion}/controllers/developer/testimonials/testimonials.php?id=${itemEdit.testimonials_aid}`}
           queryKey="testimonials"

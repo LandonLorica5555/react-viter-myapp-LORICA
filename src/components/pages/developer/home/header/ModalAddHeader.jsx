@@ -28,7 +28,7 @@ const ModalAddHeader = ({ setIsModal, itemEdit }) => {
       queryClient.invalidateQueries({ queryKey: ["header"] }); // give id for refetching data.
 
       if (data.success) {
-        alert("Successfully Created.");
+        alert(itemEdit ? "Successfully edited." : "Successfully created.");
       } else {
         alert(data.error);
       }

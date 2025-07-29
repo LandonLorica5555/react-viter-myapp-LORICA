@@ -116,7 +116,7 @@ const Header = () => {
 
         {/* Mobile Menu (now positioned absolutely) */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white absolute top-full left-0 right-0 shadow-lg px-4 py-2 space-y-2 border-t border-gray-200">
+          <div className="md:hidden flex flex-col gap-x-4 bg-white absolute top-full left-0 right-0 shadow-lg px-4 py-2 space-y-2 border-t border-gray-200">
             {dataHeader?.data.map((item, key) => {
               return (
                 <a href="#home" className="hover:text-blue-500">
