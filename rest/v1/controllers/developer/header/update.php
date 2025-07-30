@@ -15,6 +15,11 @@ if (array_key_exists('id', $_GET)) {
     $header->header_link = checkIndex($data, 'header_link');
     $header->header_updated = date("Y-m-d H:i:s");
 
+    $header_name_old = $data['header_name_old'];
+
+    // validating header name when updating
+    compareHeader($header, $header_name_old, $header->header_name);
+
     $query = checkUpdate($header);
     returnSuccess($header, 'header update', $query);
 }

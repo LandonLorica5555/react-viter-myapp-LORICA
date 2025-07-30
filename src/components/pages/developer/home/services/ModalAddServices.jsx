@@ -52,6 +52,9 @@ const ModalAddServices = ({ setIsModal, itemEdit }) => {
     web_services_image: itemEdit ? itemEdit.web_services_image : "",
     web_services_link: itemEdit ? itemEdit.web_services_link : "",
     web_services_text_url: itemEdit ? itemEdit.web_services_text_url : "",
+
+    // validating when edit/update
+    web_services_name_old: itemEdit ? itemEdit.web_services_name : "",
   };
 
   const yupSchema = Yup.object({
@@ -81,7 +84,6 @@ const ModalAddServices = ({ setIsModal, itemEdit }) => {
           validationSchema={yupSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             console.log(values);
-
             mutation.mutate(values);
           }}
         >

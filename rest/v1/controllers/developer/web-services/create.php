@@ -20,5 +20,8 @@ $webServices->web_services_text_url = $data['web_services_text_url'];
 $webServices->web_services_created = date('Y-m-d H:i:s'); // 2025-07-23 (year-day) 08:16:23 (hr-seconds)
 $webServices->web_services_updated = date('Y-m-d H:i:s');
 
+// VALIDATION OF WEB_SERVICES_NAME
+isNameExist($webServices, $webServices->web_services_name);
+
 $query = checkCreate($webServices);
 returnSuccess($webServices, 'web services create', $query);

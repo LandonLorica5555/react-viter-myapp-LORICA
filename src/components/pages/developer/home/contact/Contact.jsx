@@ -9,8 +9,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryData } from "../../../../custom-hooks/queryData";
 import ContactTable from "./ContactTable";
 import ContactList from "./ContactList";
+import ModalDeleteContact from "./ModalDeleteContact";
+import ModalEditContact from "./ModalEditContact";
 
 const Contact = () => {
+  const [isModalContact, setIsModalContact] = React.useState(false);
   const [isDeleteContact, setIsDeleteContact] = React.useState(false);
   const [itemEdit, setItemEdit] = React.useState();
   const [isTable, setIsTable] = React.useState(false);
@@ -19,12 +22,8 @@ const Contact = () => {
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
-        itemEdit
-          ? `${apiVersion}/controllers/developer/contact/contact.php?id=${itemEdit.contact_aid}`
-          : `${apiVersion}/controllers/developer/contact/contact.php`,
-        itemEdit
-          ? "put" // UPDATE
-          : "post", // CREATE
+        `${apiVersion}/controllers/developer/contact/contact.php`,
+        "post", // CREATE
         values
       ),
     onSuccess: (data) => {
@@ -32,7 +31,7 @@ const Contact = () => {
       queryClient.invalidateQueries({ queryKey: ["contact"] }); // give id for refetching data.
 
       if (data.success) {
-        alert(itemEdit ? "Successfully edited." : "Successfully created.");
+        alert("Successfully created.");
       } else {
         alert(data.error);
       }
@@ -50,20 +49,6 @@ const Contact = () => {
     "contact"
   );
 
-  const initVal = {
-    contact_fullname: itemEdit ? itemEdit.contact_fullname : "",
-    contact_email: itemEdit ? itemEdit.contact_email : "",
-    contact_message: itemEdit ? itemEdit.contact_message : "",
-  };
-
-  const yupSchema = Yup.object({
-    contact_fullname: Yup.string().required("required"),
-    contact_email: Yup.string()
-      .email("Must put a valid email")
-      .required("required"),
-    contact_message: Yup.string().required("required"),
-  });
-
   const handleToggleTable = () => {
     setIsTable(!isTable);
   };
@@ -74,7 +59,12 @@ const Contact = () => {
 
   const handleEdit = (item) => {
     setItemEdit(item);
+    setIsModalContact(true);
   };
+
+  // const handleEdit = (item) => {
+  //   setItemEdit(item);
+  // };
 
   const handleDelete = (item) => {
     setItemEdit(item);
@@ -188,9 +178,9 @@ const Contact = () => {
               </ul>
             </div>
             {/* Forms Section */}
-            <div className="contacts bg-gray-50 rounded-xl p-8 h-fit md:w-1/2 relative">
-              <div className="absolute top-0 right-0">
-                <div className="flex items-center gap-x-3">
+            <div className="contacts bg-gray-50 rounded-xl p-8 h-fit md:w-1/2">
+              <div className="">
+                <div className="flex items-center justify-end mb-2 gap-x-3">
                   <button
                     className="flex items-center gap-2 hover:underline hover:text-primary"
                     type="button"
@@ -235,12 +225,10 @@ const Contact = () => {
                   isFetching={isFetching}
                   error={error}
                   dataContact={dataContact}
-                  initVal={initVal}
-                  yupSchema={yupSchema}
                   mutation={mutation}
-                  itemEdit={itemEdit}
+                  // itemEdit={itemEdit}
                   handleAdd={handleAdd}
-                  handleEdit={handleEdit}
+                  // handleEdit={handleEdit}
                   handleDelete={handleDelete}
                 />
               )}
@@ -267,6 +255,21 @@ const Contact = () => {
           </div>
         </div>
       </section>
+
+      {isModalContact && (
+        <ModalEditContact
+          setIsModal={setIsModalContact}
+          itemEdit={itemEdit}
+        />
+      )}
+
+      {isDeleteContact && (
+        <ModalDeleteContact
+          setModalDelete={setIsDeleteContact}
+          mySqlEndpoint={`${apiVersion}/controllers/developer/contact/contact.php?id=${itemEdit.contact_aid}`}
+          queryKey="contact"
+        />
+      )}
     </>
   );
 };

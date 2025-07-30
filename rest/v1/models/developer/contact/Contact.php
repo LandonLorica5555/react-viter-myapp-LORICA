@@ -107,4 +107,20 @@ class Contact
         }
         return $query;
     }
+
+    // validating email contact
+    public function checkEmail()
+    {
+        try {
+            $sql = "select contact_email from {$this->tblContact} ";
+            $sql .= "where contact_email = :contact_email ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "contact_email" => $this->contact_email,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
 }

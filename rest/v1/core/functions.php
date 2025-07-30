@@ -178,6 +178,67 @@ function checkReadAll($object)
     return $query;
 }
 
+// validating "name in services"
+function checkExistence($count, $msg = '')
+{
+    if ($count > 0) {
+        $response = new Response();
+        $error = [];
+        $response->setSuccess(false);
+        $error['error'] = $msg;
+        $response->setData($error);
+        $response->send();
+        exit;
+    }
+}
+
+// validating "name in services"
+function isNameExist($models, $name)
+{
+    $query = $models->checkName();
+    $count = $query->rowCount();
+    checkExistence($count, "{$name} already exist.");
+}
+
+// validating "name in services" when "updating"
+function compareName($models, $name_old, $name)
+{
+    if (strtolower($name_old) != strtolower($name)) {
+        isNameExist($models, $name);
+    }
+}
+
+// validating "email in contact"
+function isEmailExist($models, $email)
+{
+    $query = $models->checkEmail();
+    $count = $query->rowCount();
+    checkExistence($count, "{$email} already exist.");
+}
+
+// validating "email in contact" when "updating"
+function compareEmail($models, $email_old, $email)
+{
+    if (strtolower($email_old) != strtolower($email)) {
+        isEmailExist($models, $email);
+    }
+}
+
+// validating header
+function isHeaderExist($models, $header)
+{
+    $query = $models->checkHeader();
+    $count = $query->rowCount();
+    checkExistence($count, "{$header} already exist.");
+}
+
+// validating "header" when "updating"
+function compareHeader($models, $header_old, $header)
+{
+    if (strtolower($header_old) != strtolower($header)) {
+        isHeaderExist($models, $header);
+    }
+}
 
 
 // $conn = 123;

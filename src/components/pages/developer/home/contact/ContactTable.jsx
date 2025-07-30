@@ -10,6 +10,8 @@ const ContactTable = ({
   handleAdd,
   handleDelete,
   handleEdit,
+  itemEdit,
+  setIsModalContact,
 }) => {
   return (
     <>
@@ -17,7 +19,7 @@ const ContactTable = ({
         <thead>
           <tr>
             <th>#</th>
-            <th>Name</th>
+            <th>Full Name</th>
             <th>Email</th>
             <th>Message</th>
             <th>Action</th>

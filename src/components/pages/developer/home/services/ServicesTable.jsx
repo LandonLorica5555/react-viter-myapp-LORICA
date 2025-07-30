@@ -15,11 +15,13 @@ const ServicesTable = ({
     <>
       <table>
         <thead>
-          <th>#</th>
-          <th>Image</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Action</th>
+          <tr>
+            <th>#</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
         </thead>
         <tbody>
           {dataServices?.data.map((item, index) => {
